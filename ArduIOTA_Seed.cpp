@@ -34,9 +34,7 @@ String ArduIOTA_Seed::EncryptSeed(String s[])
   for (int i = 0; i < arrayLength; i++)
   {  
     s[i].concat(constantSeedSuffix);
-    Serial.print(i);  Serial.println(":vorher> " + s[i]); 
     aes256_enc_single(key, s[i].c_str());
-    Serial.println("nachher > " + s[i]);
     r += s[i].c_str();   
   }
   
@@ -46,15 +44,11 @@ String ArduIOTA_Seed::EncryptSeed(String s[])
 String ArduIOTA_Seed::DecryptSeed(String s[])
 {
   String r = "";  
-  String v = "";
     
   for (int i = 0; i < arrayLength; i++)
   {
-    v += s[i];
-    Serial.print(i);  Serial.println(":vorher> " + s[i]);
     aes256_dec_single(key, s[i].c_str());
-    String st = s[i].c_str();
-    Serial.println("nachher > " + st);  
+    String st = s[i].c_str(); 
     r += st.substring(0,arrayLength);
   }
 
@@ -74,11 +68,6 @@ void ArduIOTA_Seed::GetSeed()
     GibSeed().substring(112, 128), 
     GibSeed().substring(128, 144)
     };
-
-  for (int i = 0; i < arrayLength; i++)
-  {
-    Serial.print(i);  Serial.println(":vorher> " + decSed[i]);
-  }
 
   Serial.println();
   Serial.println("> " + DecryptSeed(decSed));
@@ -149,4 +138,3 @@ int ArduIOTA_Seed::SetSeed()
 
   return 0;
 }
-
